@@ -59,7 +59,7 @@ class ViewController: UIViewController {
         )
         
         Task {
-            await fetchData(user: user) { result in
+             fetchData(user: user) { result in
                 switch result {
                 case .success(let responseData):
                     print("API Success: \(responseData)")
@@ -67,6 +67,11 @@ class ViewController: UIViewController {
                     DispatchQueue.main.async {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         if let signupVC = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? SignupViewController {
+                            signupVC.firstName=responseData.firstName
+                            signupVC.lastName=responseData.lastName
+                            signupVC.dob=responseData.dob
+                            signupVC.gender = responseData.gender == 1 ? "Male" : "Female"
+                            signupVC.height = Double(responseData.heightCM ?? 0)
                             self.navigationController?.pushViewController(signupVC, animated: true)
                         }
                     }
